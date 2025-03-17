@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="dashboard.html" class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i> SMS
+            </a>
+            <button class="sidebar-toggler" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user-circle"></i> Admin
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-heading">
+                Student Management
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="students.html" class="sidebar-link">
+                        <i class="fas fa-user-graduate"></i> Students
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="courses.html" class="sidebar-link active">
+                        <i class="fas fa-book"></i> Courses
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="enrollment.html" class="sidebar-link">
+                        <i class="fas fa-user-plus"></i> Enrollment
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="attendance.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i> Attendance
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="grades.html" class="sidebar-link">
+                        <i class="fas fa-graduation-cap"></i> Grades
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="row">
+                <div class="col">
+                    <h1 class="my-4">Course Management</h1>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Courses</h5>
+                            <a href="course-form.html" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add New Course
+                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <input type="text" id="searchInput" class="form-control" placeholder="Search courses...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" id="searchBtn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <select id="filterSelect" class="form-control">
+                                        <option value="">All Courses</option>
+                                        <option value="active">Active Courses</option>
+                                        <option value="inactive">Inactive Courses</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="table-responsive course-list">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Course Name</th>
+                                            <th>Code</th>
+                                            <th>Credits</th>
+                                            <th>Instructor</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="7" class="text-center">Loading courses...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center" id="pagination">
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                            </li>
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">1</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course View Modal -->
+    <div id="courseViewModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Course Details</h2>
+                <span class="close" onclick="document.getElementById('courseViewModal').style.display='none'">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="course-details">
+                    <div class="form-group">
+                        <label class="form-label">Course Name:</label>
+                        <p id="courseViewName"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Course Code:</label>
+                        <p id="courseViewCode"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Credits:</label>
+                        <p id="courseViewCredits"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Instructor:</label>
+                        <p id="courseViewInstructor"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description:</label>
+                        <p id="courseViewDescription"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Start Date:</label>
+                        <p id="courseViewStartDate"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Date:</label>
+                        <p id="courseViewEndDate"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status:</label>
+                        <p id="courseViewStatus"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Capacity:</label>
+                        <p id="courseViewCapacity"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('courseViewModal').style.display='none'">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load courses when the page loads
+            loadCourses();
+            
+            // Set up search and filter functionality
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const filterSelect = document.getElementById('filterSelect');
+            
+            searchBtn.addEventListener('click', function() {
+                searchCourses(searchInput.value);
+            });
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    searchCourses(searchInput.value);
+                }
+            });
+            
+            filterSelect.addEventListener('change', function() {
+                filterCourses(this.value);
+            });
+            
+            // Helper functions for searching and filtering
+            function searchCourses(query) {
+                // Fetch courses with search query
+                fetch(`../backend/course.php?action=search&query=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateCourseTable(data);
+                    })
+                    .catch(error => {
+                        console.error('Error searching courses:', error);
+                        showAlert('error', 'Failed to search courses');
+                    });
+            }
+            
+            function filterCourses(status) {
+                // Fetch courses with filter
+                fetch(`../backend/course.php?action=list&status=${status}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        updateCourseTable(data);
+                    })
+                    .catch(error => {
+                        console.error('Error filtering courses:', error);
+                        showAlert('error', 'Failed to filter courses');
+                    });
+            }
+            
+            function updateCourseTable(data) {
+                const courseList = document.querySelector('.course-list tbody');
+                courseList.innerHTML = '';
+                
+                if (data.success && data.courses && data.courses.length > 0) {
+                    data.courses.forEach(course => {
+                        courseList.innerHTML += `
+                            <tr>
+                                <td>${course.id}</td>
+                                <td>${course.name}</td>
+                                <td>${course.code}</td>
+                                <td>${course.credits}</td>
+                                <td>${course.instructor}</td>
+                                <td><span class="badge ${course.status === 'active' ? 'bg-success' : 'bg-secondary'}">${course.status}</span></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="viewCourse(${course.id})">View</button>
+                                    <button class="btn btn-primary btn-sm" onclick="editCourse(${course.id})">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteCourse(${course.id})">Delete</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    courseList.innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center">No courses found</td>
+                        </tr>
+                    `;
+                }
+            }
+        });
+        
+        // View course details
+        function viewCourse(id) {
+            fetch(`../backend/course.php?action=get&id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.course) {
+                        const course = data.course;
+                        document.getElementById('courseViewName').textContent = course.name;
+                        document.getElementById('courseViewCode').textContent = course.code;
+                        document.getElementById('courseViewCredits').textContent = course.credits;
+                        document.getElementById('courseViewInstructor').textContent = course.instructor;
+                        document.getElementById('courseViewDescription').textContent = course.description || 'N/A';
+                        document.getElementById('courseViewStartDate').textContent = course.start_date || 'N/A';
+                        document.getElementById('courseViewEndDate').textContent = course.end_date || 'N/A';
+                        document.getElementById('courseViewStatus').textContent = course.status;
+                        document.getElementById('courseViewCapacity').textContent = course.capacity || 'N/A';
+                        
+                        document.getElementById('courseViewModal').style.display = 'block';
+                    } else {
+                        showAlert('error', 'Failed to load course details');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading course details:', error);
+                    showAlert('error', 'An error occurred');
+                });
+        }
+        
+        // Edit course
+        function editCourse(id) {
+            window.location.href = `course-form.html?id=${id}`;
+        }
+        
+        // Delete course
+        function deleteCourse(id) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                fetch(`../backend/course.php?action=delete&id=${id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showAlert('success', 'Course deleted successfully');
+                            loadCourses(); // Refresh the courses list
+                        } else {
+                            showAlert('error', data.message || 'Failed to delete course');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting course:', error);
+                        showAlert('error', 'An error occurred');
+                    });
+            }
+        }
+        
+        // Modal handling
+        window.onclick = function(event) {
+            const modal = document.getElementById('courseViewModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html> 

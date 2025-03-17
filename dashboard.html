@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-modern.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="dashboard.html" class="navbar-brand">
+                <i class="fas fa-graduation-cap"></i> SMS
+            </a>
+            <button class="sidebar-toggler" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user-circle"></i> Admin
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="sidebar-heading">
+                Student Management
+            </div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link active">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="students.html" class="sidebar-link">
+                        <i class="fas fa-user-graduate"></i> Students
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="courses.html" class="sidebar-link">
+                        <i class="fas fa-book"></i> Courses
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="enrollment.html" class="sidebar-link">
+                        <i class="fas fa-user-plus"></i> Enrollment
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="attendance.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i> Attendance
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="grades.html" class="sidebar-link">
+                        <i class="fas fa-graduation-cap"></i> Grades
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="row">
+                <div class="col">
+                    <h1 class="my-4">Dashboard</h1>
+                </div>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body bg-primary text-white">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-center">
+                                            <i class="fas fa-user-graduate fa-3x"></i>
+                                            <h2 class="my-3 counter" id="totalStudents" data-target="0">0</h2>
+                                            <p>Total Students</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="students.html" class="text-primary">View Details <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body bg-success text-white">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-center">
+                                            <i class="fas fa-book fa-3x"></i>
+                                            <h2 class="my-3 counter" id="totalCourses" data-target="0">0</h2>
+                                            <p>Total Courses</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="courses.html" class="text-success">View Details <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body bg-info text-white">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="text-center">
+                                            <i class="fas fa-user-plus fa-3x"></i>
+                                            <h2 class="my-3 counter" id="activeEnrollments" data-target="0">0</h2>
+                                            <p>Active Enrollments</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="enrollment.html" class="text-info">View Details <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row my-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Student Enrollment Statistics</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="enrollmentChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Course Distribution</h5>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="courseChart" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Recent Students</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Enrolled Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentStudents">
+                                        <tr>
+                                            <td colspan="5" class="text-center">Loading...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Initialize charts when the dashboard loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sample data for charts, will be replaced with real data from backend
+            const enrollmentChartCtx = document.getElementById('enrollmentChart').getContext('2d');
+            const enrollmentChart = new Chart(enrollmentChartCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'New Enrollments',
+                        data: [15, 25, 20, 30, 35, 40],
+                        borderColor: '#4e73df',
+                        tension: 0.1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            const courseChartCtx = document.getElementById('courseChart').getContext('2d');
+            const courseChart = new Chart(courseChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Science', 'Math', 'English', 'History', 'Arts'],
+                    datasets: [{
+                        data: [30, 25, 20, 15, 10],
+                        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Initialize GSAP animations
+            gsap.from('.card', {
+                duration: 0.8,
+                y: 50,
+                opacity: 0,
+                stagger: 0.2,
+                ease: 'power3.out'
+            });
+
+            // Counter animation function
+            function animateCounter(element) {
+                const target = parseInt(element.getAttribute('data-target'));
+                const duration = 1500;
+                const start = 0;
+                const increment = target / (duration / 16);
+                let current = start;
+
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        element.textContent = Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        element.textContent = target;
+                    }
+                };
+                updateCounter();
+            }
+
+            // Animate counters when they come into view
+            const counters = document.querySelectorAll('.counter');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateCounter(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            });
+
+            counters.forEach(counter => observer.observe(counter));
+
+            // Function to update charts with real data
+            window.updateCharts = function(stats) {
+                if (stats.enrollmentData) {
+                    enrollmentChart.data.labels = stats.enrollmentData.labels;
+                    enrollmentChart.data.datasets[0].data = stats.enrollmentData.values;
+                    enrollmentChart.update();
+                }
+
+                if (stats.courseData) {
+                    courseChart.data.labels = stats.courseData.labels;
+                    courseChart.data.datasets[0].data = stats.courseData.values;
+                    courseChart.update();
+                }
+            };
+
+            // Load recent students
+            fetch('../backend/student.php?action=recent')
+                .then(response => response.json())
+                .then(data => {
+                    const recentStudentsTable = document.getElementById('recentStudents');
+                    recentStudentsTable.innerHTML = '';
+
+                    if (data.success && data.students.length > 0) {
+                        data.students.forEach(student => {
+                            recentStudentsTable.innerHTML += `
+                                <tr>
+                                    <td>${student.id}</td>
+                                    <td>${student.name}</td>
+                                    <td>${student.email}</td>
+                                    <td>${student.enrolled_date}</td>
+                                    <td>
+                                        <a href="student-view.html?id=${student.id}" class="btn btn-info btn-sm">View</a>
+                                    </td>
+                                </tr>
+                            `;
+                        });
+                    } else {
+                        recentStudentsTable.innerHTML = `
+                            <tr>
+                                <td colspan="5" class="text-center">No recent students</td>
+                            </tr>
+                        `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading recent students:', error);
+                    document.getElementById('recentStudents').innerHTML = `
+                        <tr>
+                            <td colspan="5" class="text-center">Error loading data</td>
+                        </tr>
+                    `;
+                });
+        });
+    </script>
+</body>
+</html>

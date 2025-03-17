@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Reports - Student Management System</title>
+    <link rel="stylesheet" href="style-new.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-heading">Student Management</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="students.html" class="sidebar-link">
+                        <i class="fas fa-user-graduate"></i> Students
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="courses.html" class="sidebar-link">
+                        <i class="fas fa-book"></i> Courses
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="grades.html" class="sidebar-link">
+                        <i class="fas fa-chart-line"></i> Grades
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="attendance.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i> Attendance
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link active">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <h1>Academic Reports</h1>
+                <div class="header-actions">
+                    <div class="date-filter">
+                        <select id="timeRange" class="form-control">
+                            <option value="week">Last Week</option>
+                            <option value="month">Last Month</option>
+                            <option value="semester">This Semester</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-stats">
+                <!-- Performance Overview Card -->
+                <div class="stat-card performance">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Overall Performance</h3>
+                        <p class="stat-value">85%</p>
+                        <p class="stat-change positive">+5% from last period</p>
+                    </div>
+                </div>
+
+                <!-- Attendance Rate Card -->
+                <div class="stat-card attendance">
+                    <div class="stat-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Attendance Rate</h3>
+                        <p class="stat-value">92%</p>
+                        <p class="stat-change positive">+2% from last period</p>
+                    </div>
+                </div>
+
+                <!-- Average Grade Card -->
+                <div class="stat-card grades">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Average Grade</h3>
+                        <p class="stat-value">B+</p>
+                        <p class="stat-change neutral">Same as last period</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reports-grid">
+                <!-- Grade Distribution Chart -->
+                <div class="report-card">
+                    <div class="card-header">
+                        <h2>Grade Distribution</h2>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="downloadChart('gradeChart')">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="gradeDistributionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Attendance Trends Chart -->
+                <div class="report-card">
+                    <div class="card-header">
+                        <h2>Attendance Trends</h2>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="downloadChart('attendanceChart')">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="attendanceChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Course Performance Chart -->
+                <div class="report-card full-width">
+                    <div class="card-header">
+                        <h2>Course Performance Overview</h2>
+                        <div class="card-actions">
+                            <button class="btn-icon" onclick="downloadChart('courseChart')">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="coursePerformanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="reports.js"></script>
+</body>
+</html>

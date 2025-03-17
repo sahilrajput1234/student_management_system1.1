@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-new.css">
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .settings-section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e3e6f0;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .settings-header h2 {
+            margin: 0;
+            color: var(--dark-color);
+            font-size: 1.5rem;
+        }
+
+        .settings-header i {
+            margin-right: 1rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .theme-option {
+            padding: 1rem;
+            border: 2px solid #e3e6f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .theme-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-option.active {
+            border-color: var(--primary-color);
+            background-color: rgba(78, 115, 223, 0.1);
+        }
+
+        .notification-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--primary-color);
+        }
+
+        .image-upload {
+            display: none;
+        }
+
+        .upload-btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--light-color);
+            border: 1px solid #e3e6f0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        @keyframes saveSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .save-success {
+            animation: saveSuccess 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-section">
+            <div class="settings-header">
+                <i class="fas fa-user-circle"></i>
+                <h2>Profile Settings</h2>
+            </div>
+            <div class="form-group">
+                <img src="https://via.placeholder.com/100" alt="Profile" class="profile-image" id="profilePreview">
+                <input type="file" id="profileImage" class="image-upload" accept="image/*">
+                <label for="profileImage" class="upload-btn">Change Profile Picture</label>
+            </div>
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" class="form-control" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" placeholder="Enter your email">
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="settings-header">
+                <i class="fas fa-bell"></i>
+                <h2>Notification Settings</h2>
+            </div>
+            <div class="notification-toggle">
+                <span>Email Notifications</span>
+                <label class="switch">
+                    <input type="checkbox" id="emailNotif">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="notification-toggle">
+                <span>System Notifications</span>
+                <label class="switch">
+                    <input type="checkbox" id="systemNotif">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="settings-header">
+                <i class="fas fa-palette"></i>
+                <h2>Theme Settings</h2>
+            </div>
+            <div class="theme-options">
+                <div class="theme-option active" data-theme="light">
+                    <i class="fas fa-sun"></i>
+                    <p>Light</p>
+                </div>
+                <div class="theme-option" data-theme="dark">
+                    <i class="fas fa-moon"></i>
+                    <p>Dark</p>
+                </div>
+                <div class="theme-option" data-theme="system">
+                    <i class="fas fa-desktop"></i>
+                    <p>System</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-buttons">
+            <button class="cancel-btn">Cancel</button>
+            <button class="save-btn" id="saveSettings">Save Changes</button>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>

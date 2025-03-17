@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grades - Modern UI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style-new.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-graduation-cap"></i>
+                <span>SMS</span>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-home"></i>Dashboard</a></li>
+                <li><a href="students.html"><i class="fas fa-users"></i>Students</a></li>
+                <li><a href="courses.html"><i class="fas fa-book"></i>Courses</a></li>
+                <li><a href="enrollment.html"><i class="fas fa-user-plus"></i>Enrollment</a></li>
+                <li><a href="attendance.html"><i class="fas fa-calendar-check"></i>Attendance</a></li>
+                <li><a href="grades-new.html" class="active"><i class="fas fa-chart-line"></i>Grades</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" onclick="logout()"><i class="fas fa-sign-out-alt"></i>Logout</button>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-title">
+                    <h1>Grade Management</h1>
+                    <p>View and manage student grades</p>
+                </div>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search students or courses...">
+                    </div>
+                    <button class="add-grade-btn" onclick="showGradeForm()">
+                        <i class="fas fa-plus"></i> Add Grade
+                    </button>
+                </div>
+            </header>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Students</h3>
+                        <p id="totalStudents">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="stat-info">
+                        <h3>Average Grade</h3>
+                        <p id="averageGrade">0</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-chart-pie"></i></div>
+                    <div class="stat-info">
+                        <h3>Pass Rate</h3>
+                        <p id="passRate">0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grades-container">
+                <div class="filters">
+                    <select id="courseFilter" class="filter-select">
+                        <option value="">All Courses</option>
+                    </select>
+                    <select id="gradeFilter" class="filter-select">
+                        <option value="">All Grades</option>
+                        <option value="90">A (90-100)</option>
+                        <option value="80">B (80-89)</option>
+                        <option value="70">C (70-79)</option>
+                        <option value="60">D (60-69)</option>
+                        <option value="0">F (0-59)</option>
+                    </select>
+                </div>
+
+                <div class="grades-grid" id="gradesGrid"></div>
+            </div>
+
+            <!-- Grade Form Modal -->
+            <div id="gradeFormModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add/Edit Grade</h3>
+                        <button class="close-btn" onclick="closeGradeForm()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <form id="gradeForm" onsubmit="handleGradeSubmit(event)">
+                        <input type="hidden" id="gradeId">
+                        <div class="form-group">
+                            <label for="studentSelect">Student</label>
+                            <select id="studentSelect" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="courseSelect">Course</label>
+                            <select id="courseSelect" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gradeInput">Grade</label>
+                            <input type="number" id="gradeInput" min="0" max="100" required>
+                            <div class="grade-slider">
+                                <input type="range" id="gradeSlider" min="0" max="100" value="0">
+                                <div class="grade-marks">
+                                    <span>0</span>
+                                    <span>25</span>
+                                    <span>50</span>
+                                    <span>75</span>
+                                    <span>100</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="commentsInput">Comments</label>
+                            <textarea id="commentsInput" rows="3"></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="button" class="cancel-btn" onclick="closeGradeForm()">Cancel</button>
+                            <button type="submit" class="save-btn">Save Grade</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="grades-new.js"></script>
+</body>
+</html>

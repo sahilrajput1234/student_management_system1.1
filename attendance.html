@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance - Student Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-new.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .attendance-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .attendance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .date-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .calendar-view {
+            background: #f8f9fc;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e3e6f0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-day.present {
+            border-color: #1cc88a;
+            background-color: rgba(28, 200, 138, 0.1);
+        }
+
+        .calendar-day.absent {
+            border-color: #e74a3b;
+            background-color: rgba(231, 74, 59, 0.1);
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #e3e6f0;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #e3e6f0;
+            margin-bottom: 2rem;
+        }
+
+        .attendance-list {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .attendance-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e3e6f0;
+            transition: background-color 0.3s ease;
+        }
+
+        .attendance-item:hover {
+            background-color: #f8f9fc;
+        }
+
+        .attendance-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-badge.present {
+            background-color: rgba(28, 200, 138, 0.1);
+            color: #1cc88a;
+        }
+
+        .status-badge.absent {
+            background-color: rgba(231, 74, 59, 0.1);
+            color: #e74a3b;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e3e6f0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-heading">Student Management</div>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item">
+                    <a href="dashboard.html" class="sidebar-link">
+                        <i class="fas fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="students.html" class="sidebar-link">
+                        <i class="fas fa-user-graduate"></i> Students
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="courses.html" class="sidebar-link">
+                        <i class="fas fa-book"></i> Courses
+                    </a>
+                </li>
+                <li class="sidebar-item active">
+                    <a href="attendance.html" class="sidebar-link">
+                        <i class="fas fa-calendar-check"></i> Attendance
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="grades.html" class="sidebar-link">
+                        <i class="fas fa-graduation-cap"></i> Grades
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="reports.html" class="sidebar-link">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="settings.html" class="sidebar-link">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="attendance-container">
+                <div class="attendance-header">
+                    <h1>Attendance Management</h1>
+                    <div class="date-selector">
+                        <button class="btn btn-outline-primary"><i class="fas fa-chevron-left"></i></button>
+                        <h3 id="currentMonth">September 2023</h3>
+                        <button class="btn btn-outline-primary"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h4>Total Students</h4>
+                        <h2>156</h2>
+                        <p class="text-success"><i class="fas fa-arrow-up"></i> 3.5% increase</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Present Today</h4>
+                        <h2>142</h2>
+                        <p class="text-success">91% attendance rate</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Absent Today</h4>
+                        <h2>14</h2>
+                        <p class="text-danger">9% absence rate</p>
+                    </div>
+                </div>
+
+                <div class="calendar-view">
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="attendanceChart"></canvas>
+                </div>
+
+                <div class="filters">
+                    <button class="filter-btn active">All Students</button>
+                    <button class="filter-btn">Present</button>
+                    <button class="filter-btn">Absent</button>
+                </div>
+
+                <div class="attendance-list" id="attendanceList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Calendar Generation
+        function generateCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            // Add day headers
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day header';
+                dayHeader.textContent = day;
+                grid.appendChild(dayHeader);
+            });
+
+            // Add calendar days
+            for (let i = 1; i <= 31; i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.innerHTML = `
+                    <span>${i}</span>
+                    <small>${Math.random() > 0.1 ? 'Present' : 'Absent'}</small>
+                `;
+                if (Math.random() > 0.1) {
+                    day.classList.add('present');
+                } else {
+                    day.classList.add('absent');
+                }
+                grid.appendChild(day);
+            }
+        }
+
+        // Chart Generation
+        function generateChart() {
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Attendance Rate',
+                        data: [92, 88, 95, 91],
+                        borderColor: '#4e73df',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(78, 115, 223, 0.05)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: value => value + '%'
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeInOutQuart'
+                    }
+                }
+            });
+        }
+
+        // Attendance List Generation
+        function generateAttendanceList() {
+            const list = document.getElementById('attendanceList');
+            const students = [
+                { name: 'John Doe', status: 'present', time: '8:30 AM' },
+                { name: 'Jane Smith', status: 'present', time: '8:45 AM' },
+                { name: 'Mike Johnson', status: 'absent', time: '-' },
+                { name: 'Sarah Williams', status: 'present', time: '8:15 AM' }
+            ];
+
+            students.forEach(student => {
+                const item = document.createElement('div');
+                item.className = 'attendance-item';
+                item.innerHTML = `
+                    <img src="https://ui-avatars.com/api/?name=${student.name}&background=random" alt="${student.name}">
+                    <div style="flex: 1">
+                        <h4>${student.name}</h4>
+                        <small>Check-in: ${student.time}</small>
+                    </div>
+                    <span class="status-badge ${student.status}">${student.status}</span>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            generateCalendar();
+            generateChart();
+            generateAttendanceList();
+
+            // Add animation to stats cards
+            const cards = document.querySelectorAll('.stat-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
+</html>
